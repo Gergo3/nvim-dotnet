@@ -13,9 +13,14 @@ RUN pacman -Sy --noconfirm --noprogressbar --needed archlinux-keyring \
         dotnet-sdk-9.0 \
 	&& pacman -Scc --noconfirm --noprogressbar --needed
 
+RUN useradd builder
+USER builder
 RUN git clone https://aur.archlinux.org/netcoredbg.git /tmp/netcoredbg \
         && cd /tmp/netcoredbg \
-        && makepkg --noconfirm --syncdeps --install
+        && makepkg --noconfirm --syncdeps
+USER root
+RUN pacman -U --noconfirm /tmp/netcoredbg/*.pkg.tar.* \
+        && userdel builder
 
 RUN dotnet tool install --global \
         csharp-ls
