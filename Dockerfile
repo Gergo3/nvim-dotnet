@@ -3,6 +3,11 @@
 
 #build aur packages
 FROM gergo111/nvim-base as builder
+
+#system upgrade
+RUN pacman -Sy --noconfirm --noprogressbar --needed archlinux-keyring \
+	&& pacman -Syu --noconfirm --noprogressbar --needed
+
 RUN useradd -m builduser && \
     echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
