@@ -1,9 +1,21 @@
 
 
 
+#build aur packages
+FROM gergo111/nvim-base as builder
+    RUN useradd -m builduser && \
+        echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+    RUN git clone https://aur.archlinux.org/netcoredbg.git /tmp/netcoredbg \
+            && cd /tmp/netcoredbg \
+            && makepkg --noconfirm --syncdeps
+
+
+
 FROM gergo111/nvim-base
 
-
+# copy aur package(s)
+COPY --from=builder /tmp/netcoredbg/*.pkg.tar.* /tmp/
 
 #install packages
 RUN pacman -Sy --noconfirm --noprogressbar --needed archlinux-keyring \
@@ -11,11 +23,9 @@ RUN pacman -Sy --noconfirm --noprogressbar --needed archlinux-keyring \
 	&& pacman-key --populate archlinux \
 	&& pacman -Syu --noconfirm --noprogressbar --needed \
         dotnet-sdk-9.0 \
+        && pacman -U --noconfirm /tmp/*.pkg.tar.* \
 	&& pacman -Scc --noconfirm --noprogressbar --needed
 
-RUN git clone https://aur.archlinux.org/netcoredbg.git /tmp/netcoredbg \
-        && cd /tmp/netcoredbg \
-        && makepkg --noconfirm --syncdeps --install --asroot
 
 RUN dotnet tool install --global \
         csharp-ls
