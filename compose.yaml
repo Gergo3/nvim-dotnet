@@ -1,6 +1,6 @@
 services:
   ide-dev:
-    image: gergo111/nvim-dotnet
+    image: gergo111/nvim-dotnet:dev
     volumes:
       - type: bind
         source: ./

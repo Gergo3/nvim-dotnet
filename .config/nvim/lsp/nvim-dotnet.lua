@@ -1,5 +1,16 @@
 --lsp config
 --eg.: vim.lsp.enable('pylsp')
-vim.lsp.config('csharp_ls', config)
-require("csharpls_extended").buf_read_cmd_bind()
+--vim.lsp.config('csharp_ls', config)
+--require("csharpls_extended").buf_read_cmd_bind()
+
+vim.lsp.config.csharp_ls.cmd = { "/path/to/csharp-ls" }
+vim.lsp.config.csharp_ls.on_attach = function(client, bufnr)
+    require("csharpls_extended").setup {
+        -- plugin options
+    }
+end
+
+vim.lsp.start(vim.lsp.config.csharp_ls)
+
+
 --require("telescope").load_extension("csharpls_definition")
