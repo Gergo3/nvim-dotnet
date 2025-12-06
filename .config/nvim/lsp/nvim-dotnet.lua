@@ -8,10 +8,7 @@ vim.lsp.config.csharp_ls.on_attach = function(client, bufnr)
         -- plugin options
     }
     -- semantic tokens for Neovim 0.11.x
-    if client.server_capabilities.semanticTokensProvider then
-        -- directly call the working API
-        vim.lsp.semantic_tokens.start(bufnr, client.id)
-    end
+    vim.lsp.semantic_tokens.start(0, vim.lsp.get_clients()[1].id)
 end
 
 --vim.lsp.start(vim.lsp.config.csharp_ls)
