@@ -33,6 +33,8 @@ RUN pacman -Sy --noconfirm --noprogressbar --needed archlinux-keyring \
 	&& pacman -Scc --noconfirm --noprogressbar --needed
 
 
+# add .NET global tools directory to path
+ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet tool install --global \
         csharp-ls
 
