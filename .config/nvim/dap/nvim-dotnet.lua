@@ -1,4 +1,5 @@
 --debugger setup
+local dap = require('dap')
 require('dap-cs').setup()
 
 -- Automatically build before debugging
